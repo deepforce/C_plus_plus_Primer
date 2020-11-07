@@ -391,3 +391,6 @@ int main()
 > 0-201-78345-X 3 60 20 occurs 2 times  
 > 0-201-78345-Y 3 60 20 occurs 1 times  
 > 0-201-78345-Z 2 50 25 occurs 1 times  
+
+## 练习1.25
+> 借助网站上的Sales_item.h头文件，编译并运行本节给出的书店程序。
