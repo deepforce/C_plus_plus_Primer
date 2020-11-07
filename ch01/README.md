@@ -98,3 +98,194 @@ int main()
 ```cpp
 std::cout << /* "*/" */";
 ```
+
+## 练习1.9
+> 编写程序，使用while循环将50到100的整数相加。
+```cpp
+#include <iostream>
+int main() {
+    int sum = 0, val = 50;
+    while (val <= 100) {
+        sum += val;
+        val++;
+    }
+    std::cout << "Sum of 50 to 100 inclusive is "
+              << sum << std::endl;
+    return 0;
+}
+```
+## 练习1.10
+> 除了++运算符将运算对象的值增加1之外，还有一个递减运算符（--）实现将值减少1。编写程序，使用递减运算符在循环中按递减顺序打印出10到0之间的整数。
+
+```cpp
+#include <iostream>
+int main() {
+    int val = 10;
+    while (val >= 0) {
+        std::cout << val << " ";
+        val--;
+    }   
+    std::cout << std::endl;
+    return 0;
+}
+```
+
+## 练习1.11
+> 编写程序，提示用户输入两个整数，打印出这两个整数所指定的范围内的所有整数。
+
+```cpp
+#include <iostream>
+
+int main() {
+    int start = 0, end = 0;
+    std::cout << "Please input two num as range: ";
+    std::cin >> start >> end;
+    while (start <= end) {
+        std::cout << start << " ";
+        start++;
+    }
+    std::cout << std::endl;
+    return 0;
+}
+```
+
+## 练习1.12
+> 下面的for循环完成了什么功能？sum的终值是多少？
+> ```cpp
+> int sum = 0;
+> for (int i = -100; i <= 100; ++i)
+>   sum += i;
+> ```
+从-100加到100，sum的终值是0。
+
+## 练习1.13
+> 使用for循环重做1.4.1节中的所有练习（第11页）。
+
+### 练习1.9
+```cpp
+#include <iostream>
+int main() {
+    int sum = 0;
+    for (int val = 50; val <= 100; val++)
+        sum+=val;
+    std::cout << "Sum of 50 to 100 inclusive is "
+              << sum << std::endl;
+    return 0;
+}
+```
+### 练习1.10
+```cpp
+#include <iostream>
+int main() {
+    int val = 10;
+    for (int val = 10; val >= 0; val--) {
+        std::cout << val << " ";
+    }
+    std::cout << std::endl;
+    return 0;
+}
+```
+
+### 练习1.11
+```cpp
+#include <iostream>
+
+int main() {
+    int start = 0, end = 0;
+    std::cout << "Please input two num as range: ";
+    std::cin >> start >> end;
+    for (;start<=end;start++) {
+        std::cout << start << " ";
+    }
+    std::cout << std::endl;
+    return 0;
+}
+```
+## 练习1.14
+> 对比for循环和while循环，两种形式的优缺点各是什么？
+
+> The main difference between the `for`'s and the `while`'s is a matter of pragmatics: we usually use `for` when there is a known number of iterations, and use `while` constructs when the number of iterations in not known in advance. The `while` vs `do ... while` issue is also of pragmatics, the second executes the instructions once at start, and afterwards it behaves just like the simple while.
+
+## 练习1.15
+> 编写程序，包含第14页“再探编译”中讨论的常见错误。熟悉编译器生成的错误信息。
+
+### 语法错误
+```cpp
+int main(){
+    std::cout << "Hello World!" << std::endl // semicolon missed 
+    return 0;
+}
+```
+### 类型错误
+```cpp
+int main(){
+    char s = "Hello World!"; // Here char should be std::string
+    std::cout << s << endl;
+    return 0;
+}
+```
+### 声明错误
+```cpp
+int main(){
+    int k = 0;
+    std::cout << K << std::endl; // use of undeclared identifier 'K'
+    return 0;
+}
+```
+
+## 练习1.16
+> 编写程序，从cin读取一组数，输出其和。
+```cpp
+#include <iostream>
+int main() {
+    int sum = 0;
+    for (int val; std::cin >> val; sum += val);
+    std::cout << sum << std::endl;
+    return 0;
+}
+```
+
+## 练习1.17
+> 如果输入的所有值都是相等的，本节的程序会输出什么？如果没有重复值，输出又会是怎样的？
+
+如果输入值都相等，它将打印一行显示您输入的数字的计数。  
+如果没有重复值，它将在每行打印各个数字的计数，且它们都为1次。
+
+## 练习1.18
+> 编译并运行本节的程序，给它输入全都相等的值。再次运行程序，输入没有重复的值。
+
+值都相等
+> 1 1 1 1 1  
+> 1 occurs 5 times
+
+值都不等
+> 1 2 3 4 5  
+> 1 occurs 1 times  
+> 2 occurs 1 times  
+> 3 occurs 1 times  
+> 4 occurs 1 times  
+> 5 occurs 1 times  
+
+## 练习1.19
+> 修改你为1.4.1节练习1.11（第11页）所编写的程序（打印一个范围内的数），使其能处理用户输入的第一个数比第二个数小的情况。
+
+```cpp
+#include <iostream>
+
+int main() {
+    int start = 0, end = 0;
+    std::cout << "Please input two num: ";
+    std::cin >> start >> end;
+    if (start <= end) {
+        while (start <= end){
+            std::cout << start << " ";
+            start++;
+        }
+        std::cout << std::endl;
+    }
+    else{
+        std::cout << "start should be smaller than end !!!";
+    }
+    return 0;
+}  
+```
