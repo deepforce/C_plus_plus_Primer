@@ -65,3 +65,36 @@ int main()
 >           << " is " << v1 + v2 << std::endl;
 > ```
 不合法。第二行多了个分号。修正：将分号去掉。
+
+## 练习1.7
+> 编译一个包含不正确的嵌套注释的程序，观察编译器返回的错误信息
+
+如下：
+```cpp
+/*
+* comment pairs /* */ cannot nest.
+* ''cannot nest'' is considered source code,
+* as is the rest of the program
+*/
+int main()
+{
+    return 0;
+}
+```
+错误信息：
+![](../ch01/imgs/ex1_7.png)
+
+## 练习1.8
+> 指出下列哪些输出语句是合法的（如果有的话）：
+> ```cpp
+> std::cout << "/*";
+> std::cout << "*/";
+> std::cout << /* "*/" */;
+> std::cout << /* "*/" /* "/*" */;
+> ```
+> 预测编译这些语句会产生什么样的结果，实际编译这些语句来验证你的答案（编写一个小程序，每次将上述一条语句作为其主体），改正每个编译错误。
+
+只有第三行是错的。改成如下：
+```cpp
+std::cout << /* "*/" */";
+```
