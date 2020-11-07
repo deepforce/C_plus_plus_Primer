@@ -289,3 +289,105 @@ int main() {
     return 0;
 }  
 ```
+
+## 练习1.20
+> 在网站[http://www.informit.com/title/0321714113](http://www.informit.com/title/0321714113)上，第1章的代码目录中包含了头文件Sales_item.h。将它拷贝到你自己的工作目录中。用它编写一个程序，读取一组书籍销售记录，将每条记录打印到标准输出上。
+
+```cpp
+#include <iostream>
+#include "Sales_item.h"
+
+int main()
+{
+	for (Sales_item item; std::cin >> item; std::cout << item << std::endl);
+	return 0;
+}
+```
+
+## 练习1.21
+> 编写程序，读取两个ISBN相同的Sales_item对象，输出它们的和。
+```cpp
+#include <iostream>
+#include "include/Sales_item.h"
+
+using std::cin;
+using std::cout;
+using std::endl;
+
+int main()
+{
+    Sales_item item1, item2;
+    cin >> item1 >> item2;
+    cout << item1 + item2 << endl;
+    return 0;
+}
+```
+## 练习1.22
+> 编写程序，读取多个具有相同ISBN的销售记录，输出所有记录的和。
+```cpp
+#include <iostream>
+#include "include/Sales_item.h"
+
+using std::cin;
+using std::cout;
+using std::endl;
+
+int main()
+{
+    Sales_item sum;
+    if (cin >> sum) {
+        Sales_item temp;
+        while (cin >> temp) {
+            if (sum.isbn() == temp.isbn()) {
+                sum += temp;
+            } else {
+                cout << sum << endl;
+                sum = temp;
+            }
+        }
+        cout << sum << endl;
+    } else {
+        std::cerr << "No data" << endl;
+        return -1;
+    }
+    return 0;
+}
+```
+
+## 练习1.23
+> 编写程序，读取多条销售记录，并统计每个ISBN（每本书）有几条销售记录。
+```cpp
+#include <iostream>
+#include "include/Sales_item.h"
+int main()
+{
+    Sales_item currItem, valItem;
+    if (std::cin >> currItem)
+    {
+        int cnt = 1;
+        while (std::cin >> valItem)
+        {
+            if (valItem.isbn() == currItem.isbn())
+            {
+                ++cnt;
+            }
+            else
+            {
+                std::cout << currItem << " occurs " << cnt << " times " << std::endl;
+                currItem = valItem;
+                cnt = 1;
+            }
+        }
+        std::cout << currItem << " occurs "<< cnt << " times " << std::endl;
+    }
+    return 0;
+}
+```
+
+## 练习1.24
+> 输入表示多个ISBN的多条销售记录来测试上一个程序，每个ISBN的记录应该聚在一起。
+
+运行结果
+> 0-201-78345-X 3 60 20 occurs 2 times  
+> 0-201-78345-Y 3 60 20 occurs 1 times  
+> 0-201-78345-Z 2 50 25 occurs 1 times  
