@@ -76,3 +76,90 @@ int main()
     return 0;
 }
 ```
+
+## 练习2.9
+> 解释下列定义的含义。对于非法的定义，请说明错在何处并将其改正。
+> - (a) std::cin >> int input_value;
+> - (b) int i = { 3.14 };
+> - (c) double salary = wage = 9999.99;
+> - (d) int i = 3.14;
+
+(a): 应该先定义再使用。
+```cpp
+int input_value = 0;
+std::cin >> input_value;
+```
+(b): 用列表初始化内置类型变量时，如果存在丢失的风险，则编译器将报错。
+```cpp
+double i = { 3.14 };
+```
+(c): 在这里`wage`是未定义的，应该在此之前将其定义。
+```cpp
+double wage;
+double salary = wage = 9999.99;
+```
+(d): 不报错，但是小数部分会被截断。
+```cpp
+double i = 3.14;
+```
+
+## 练习2.10
+> 下列变量的初值分别是什么？
+> ```cpp
+> std::string global_str;  
+> int global_int;  
+> int main()  
+> {
+>     int local_int;
+>     std::string local_str;
+> }
+> ```
+
+`global_str`和`global_int`是全局变量，所以初值分别为空字符串和0。  
+`local_int`是局部变量并且没有初始化，它的初值是未定义的。 `local_str` 是 string 类的对象，它的值由类确定，为空字符串。
+
+## 练习2.11
+> 指出下面的语句是声明还是定义：
+> - (a) extern int ix = 1024;
+> - (b) int iy;
+> - (c) extern int iz;
+
+(a): 定义
+(b): 定义
+(C): 声明
+
+## 练习2.12
+> 请指出下面的名字中哪些是非法的？
+> - (a) int double = 3.14;
+> - (b) int _;
+> - (c) int catch-22;
+> - (d) int 1_or_2 = 1;
+> - (e) double Double = 3.14;
+
+(a), (c), (d) 非法。
+
+## 练习2.13
+> 下面程序中j的值是多少？
+> ```cpp
+> int i = 42;
+> int main()
+> {
+>    int i = 100;
+>    int j = i;
+> }
+> ```
+
+j的值是100。
+
+## 练习2.14
+> 下面的程序合法吗？如果合法，它将输出什么？
+> ```cpp
+> int i = 100, sum = 0;
+> for (int i = 0; i != 10; ++i)
+>     sum += i;
+> std::cout << i << " " << sum << std::endl;
+> ```
+
+合法。输出100 45。
+
+
