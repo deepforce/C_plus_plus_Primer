@@ -275,3 +275,97 @@ int main()
 (b): i是一个int，ip是一个空指针。
 (c): ip是一个指向int的指针，ip2是一个int。
 
+## 练习2.26
+> 下面哪些句子是合法的？如果有不合法的句子，请说明为什么？
+> - (a) const int buf;      
+> - (b) int cnt = 0;        
+> - (c) const int sz = cnt; 
+> - (d) ++cnt; 
+> - (e) ++sz;
+
+(a) 不合法, const 对象必须初始化。  
+(b) 合法。  
+(c) 合法。  
+(d) 合法。
+(d) 不合法。 const对象无法被修改。
+
+## 练习2.27
+> 下面的哪些初始化是合法的？请说明原因。
+> - (a) int i = -1, &r = 0;
+> - (b) int *const p2 = &i2;        
+> - (c) const int i = -1, &r = 0;   
+> - (d) const int *const p3 = &i2;  
+> - (e) const int *p1 = &i2;        
+> - (f) const int &const r2;        
+> - (g) const int i2 = i, &r = i;   
+
+(a) 不合法。r必须引用一个对象。  
+(b) 合法。  
+(c) 合法。  
+(d) 合法。  
+(e) 合法。   
+(f) 不合法。 r2是引用，引用没有顶层const。  
+(g) 合法。
+
+## 练习2.28
+> 说明下面的这些定义是什么意思，挑出其中不合法的。
+> - (a) int i, *const cp;   
+> - (b) int *p1, *const p2;     
+> - (c) const int ic, &r = ic;  
+> - (d) const int *const p3;  
+> - (e) const int *p;
+
+(a) 不合法。 const指针必须初始化。  
+(b) 不合法。 const指针必须初始化。  
+(c) 不合法。 const int 必须初始化。  
+(d) 不合法。 const 指针必须初始化。  
+(e) 合法。一个指向const int的指针。
+
+## 练习2.29
+> 假设已有上一个练习中定义的那些变量，则下面的哪些语句是合法的？请说明原因。
+> - (a) i = ic;
+> - (b) p1 = p3;
+> - (c) p1 = &ic;
+> - (d) p3 = &ic;
+> - (e) p2 = p1;
+> - (f) ic = *p3;
+
+(a) 合法，常量赋值给普通变量。  
+(b) 不合法，p3是const指针不能赋值给普通指针。  
+(c) 不合法，普通指针不可以指向常量。  
+(d) 不合法，p3是指向常量的const指针，不可改变。  
+(e) 不合法， p2是const指针,不可改变。  
+(f) 不合法， ic是常量，不可改变。  
+
+## 练习2.30
+> 对于下面的这些语句，请说明对象被声明成了顶层const还是底层const？
+> ```cpp
+> const int v2 = 0; int v1 = v2;
+> int *p1 = &v1, &r1 = v1;
+> const int *p2 = &v2, *const p3 = &i, &r2 = v2;
+> ```
+
+v2是顶层const，p2是底层const， p3是底层const又是顶层const，r2是底层const。
+
+## 练习2.31
+> 假设已有上一个练习中所做的那些声明，则下面的哪些语句是合法的？请说明顶层const和底层const在每个例子中有何体现。
+> ```cpp
+> r1 = v2; // 合法, 顶层const在拷贝时不受影响
+> p1 = p2; // 不合法, p2 是底层const，如果要拷贝必须要求 p1 也是底层const
+> p2 = p1; // 合法, int* 可以转换成const int*
+> p1 = p3; // 不合法, p3 是一个底层const，p1 不是
+> p2 = p3; // 合法, p2 和 p3 都是底层const，拷贝时忽略掉顶层const
+> ```
+
+## 练习2.32
+> 下面的代码是否合法？如果非法，请设法将其修改正确。
+> ```cpp
+> int null = 0, *p = null;
+> ```
+
+不合法。修改如下：
+```cpp
+int null = 0, *p = &null;
+int null = 0, *p = nullptr;
+```
+
