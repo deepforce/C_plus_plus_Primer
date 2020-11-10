@@ -369,3 +369,106 @@ int null = 0, *p = &null;
 int null = 0, *p = nullptr;
 ```
 
+## 练习2.33
+> 利用本节定义的变量，判断下列语句的运行结果。
+> ```cpp
+> a = 42; // a 赋值 42
+> b = 42; // b 赋值 42
+> c = 42; // c 赋值 42
+> d = 42; // d 是一个 int *,所以语句非法，修改：*d = 42;
+> e = 42; // e 是一个 const int *, 所以语句非法，修改：e = &c;
+> g = 42; // g 是一个 const int 的引用，引用都是底层const，所以不能被赋值
+> ```
+
+## 练习2.34
+> 基于上一个练习中的变量和语句编写一段程序，输出赋值前后变量的内容，你刚才的推断正确吗？如果不对，请反复研读本节的示例直到你明白错在何处为止。
+
+```cpp
+#include <iostream>
+
+int main()
+{
+    int i = 0, &r = i;
+    auto a = r;   // a is an int (r is an alias for i, which has type int)
+
+    const int ci = i, &cr = ci;
+    auto b = ci; // b is an int (top-level const in ci is dropped)
+    auto c = cr; // c is an int (cr is an alias for ci whose const is top-level)
+    auto d = &i; // d is an int* (& ofan int objectis int*)
+    auto e = &ci; // e is const int*(& of a const object is low-level const)
+
+    const auto f = ci; // deduced type of ci is int; f has type const int
+    auto &g = ci; // g is a const int& that is bound to ci
+
+    a = 42; b = 42; c = 42; *d = 42; e = &c;
+
+    return 0;
+}
+```
+
+## 练习2.35
+> 判断下列定义推断出的类型是什么，然后编写程序进行验证。
+> ```cpp
+> const int i = 42;
+> auto j = i; const auto &k = i; auto *p = &i; 
+> const auto j2 = i, &k2 = i;
+> ```
+j是int， k是const int&，p是const int*， j2是const int，k2是const int&。
+
+```cpp
+#include <iostream>
+int main()
+{
+    const int i = 42;
+    auto j = i; const auto &k = i; auto *p = &i; 
+    const auto j2 = i, &k2 = i;
+
+    // print i means int, and PKi means pointer to const int.
+    std::cout   << "j is "      << typeid(j).name()
+                << "\nk is "    << typeid(k).name()
+                << "\np is "    << typeid(p).name()
+                << "\nj2 is "   << typeid(j2).name()
+                << "\nk2 is "   << typeid(k2).name()
+                << std::endl;
+
+    return 0;
+}
+```
+
+## 练习2.36
+> 关于下面的代码，请指出每一个变量的类型以及程序结束时它们各自的值。
+> ```cpp
+> int a = 3, b = 4;
+> decltype(a) c = a;
+> decltype((b)) d = a;
+> ++c;
+> ++d;
+> ```
+
+a是int，值为4，b是int，值为4，c是int，值为4，d是int&，值为4。
+
+## 练习2.37
+> 赋值是会产生引用的一类典型表达式，引用的类型就是左值的类型。也就是说，如果i是int，则表达式i=x的类型是int&。根据这一特点，请指出下面的代码中每一个变量的类型和值。
+> ```cpp
+> int a = 3, b = 4;
+> decltype(a) c = a;
+> decltype(a = b) d = a;
+> ```
+
+a是int，值为3，b是int，值为4，c是int，值为3，d是int&，值为3。
+
+## 练习2.38
+> 说明由decltype指定类型和由auto指定类型有何区别。请举出一个例子，decltype指定的类型与auto指定的类型一样；再举一个例子，decltype指定的类型与auto指定的类型不一样。
+
+decltype 处理顶层const和引用的方式与auto不同，decltype会将顶层const和引用保留起来。  
+decltype和auto之间的另一个重要区别是，decltype所做的推断取决于它所给定表达式的形式。
+```cpp
+int i = 0, &r = i;
+//相同
+auto a = i;
+decltype(i) b = i;
+
+//不同 d 是一个 int&
+auto c = r;
+decltype(r) d = r;
+```
