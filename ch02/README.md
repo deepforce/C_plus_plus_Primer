@@ -472,3 +472,231 @@ decltype(i) b = i;
 auto c = r;
 decltype(r) d = r;
 ```
+
+## 练习2.39
+> 编译下面的程序观察其运行结果，注意，如果忘记写类定义体后面的分号会发生什么情况？记录下相关信息，以后可能会有用。
+> ```cpp
+> struct Foo { /* 此处为空  */ } // 注意：没有分号
+> int main()
+> {
+>     return 0;
+> }
+> ```
+
+![](./imgs/ex2_39.png)
+
+## 练习2.40
+> 根据自己的理解写出Sales_data类，最好与书中的例子有所区别。
+
+```cpp
+struct Sale_data
+{
+    std::string bookNo;
+    std::string bookName;
+    unsigned units_sold = 0;
+    double revenue = 0.0;
+    double price = 0.0;
+    //...
+}
+```
+
+## 练习2.41
+> 使用你自己的Sales_data类重写1.5.1节（第20页）、1.5.2节（第21页）和1.6节（第22页）的练习。眼下先把Sales_data类的定义和main函数放在同一个文件里。
+
+```cpp
+// 1.5.1
+#include <iostream>
+#include <string>
+
+struct Sale_data 
+{
+    std::string bookNo;
+    unsigned units_sold = 0;
+    double revenue = 0.0;
+};
+
+int main()
+{
+    Sale_data book;
+    double price;
+    std::cin >> book.bookNo >> book.units_sold >> price;
+    book.revenue =  book.units_sold * price;
+    std::cout << book.bookNo << " " << book.units_sold << " " << book.revenue << " " << price;
+    return 0;
+}
+```
+
+```cpp
+// 1.5.2
+#include <iostream>
+#include <string>
+
+struct Sale_data 
+{
+    std::string bookNo;
+    unsigned units_sold = 0;
+    double revenue = 0.0;
+};
+
+int main()
+{
+    Sale_data book1, book2;
+    double price1, price2;
+    std::cin >> book1.bookNo >> book1.units_sold >> price1;
+    std::cin >> book2.bookNo >> book2.units_sold >> price2;
+    book1.revenue =  book1.units_sold * price1;
+    book2.revenue =  book2.units_sold * price2;
+
+    if (book1.bookNo == book2.bookNo) {
+        unsigned totalCnt = book1.units_sold + book2.units_sold;
+        double totalRevenue = book1.revenue + book2.revenue;
+        std::cout << book1.bookNo << " " << totalCnt << " " << totalRevenue << " ";
+        if (totalCnt != 0) 
+            std::cout << totalRevenue / totalCnt << std::endl;
+        else
+            std::cout << "(no sales)" << std::endl;
+        return 0;
+    }
+    else {
+        std::cerr << "Data must refer to same ISBN" << std::endl;
+        return -1;
+    }
+}
+```
+
+```cpp
+// 1.6
+#include <iostream>
+#include <string>
+
+struct Sale_data 
+{
+    std::string bookNo;
+    unsigned units_sold = 0;
+    double revenue = 0.0;
+};
+
+int main()
+{
+    Sale_data total;
+    double totalPrice;
+    if (std::cin >> total.bookNo >> total.units_sold >> totalPrice) {
+        total.revenue = totalPrice * total.units_sold;
+
+        Sale_data trans;
+        double transPrice;
+        while (std::cin >> trans.bookNo >> trans.units_sold >> transPrice) {
+            trans.revenue = transPrice * trans.units_sold;
+
+            if (total.bookNo == trans.bookNo) {
+                total.units_sold += trans.units_sold;
+                total.revenue += trans.revenue;
+            }
+            else {
+                std::cout << total.bookNo << " " << total.units_sold << " " << total.revenue << " ";
+                if (total.units_sold != 0) 
+                    std::cout << total.revenue / total.units_sold << std::endl;
+                else
+                    std::cout << "(no sales)" << std::endl;
+                
+                total.bookNo = trans.bookNo;
+                total.units_sold = trans.units_sold;
+                total.revenue = trans.revenue;
+            }
+        }
+        std::cout << total.bookNo << " " << total.units_sold << " " << total.revenue << " ";
+        if (total.units_sold != 0) 
+            std::cout << total.revenue / total.units_sold << std::endl;
+        else
+            std::cout << "(no sales)" << std::endl;
+        return 0;
+    }
+    else {
+        std::cerr << "No Data?!" << std::endl;
+        return -1;
+    }
+}
+```
+
+## 练习2.42
+> 根据你自己的理解重写一个Sales_data.h头文件，并以此为基础重做2.6.2节（第67页）的练习。
+
+```cpp
+// 1.5.1
+#include <iostream>
+#include "include/ex2_42.h"
+
+int main()
+{
+    Sales_data book;
+    double price;
+    std::cin >> book.bookNo >> book.units_sold >> price;
+    book.CalcRevenue(price);
+    book.Print();
+
+    return 0;
+}
+```
+
+```cpp
+// 1.5.2
+#include <iostream>
+#include "include/ex2_42.h"
+
+int main()
+{
+    Sales_data book1, book2;
+    double price1, price2;
+    std::cin >> book1.bookNo >> book1.units_sold >> price1;
+    std::cin >> book2.bookNo >> book2.units_sold >> price2;
+    book1.CalcRevenue(price1);
+    book2.CalcRevenue(price2);
+
+    if (book1.bookNo == book2.bookNo)
+    {
+        book1.AddData(book2);
+        book1.Print();
+        return 0;
+    }
+    else
+    {
+        std::cerr << "Data must refer to same ISBN" << std::endl;
+        return -1;  // indicate failure
+    }
+}
+```
+
+```cpp
+// 1.6
+#include <iostream>
+#include "include/ex2_42.h"
+
+int main()
+{
+    Sales_data total;
+    double totalPrice;
+    if (std::cin >> total.bookNo >> total.units_sold >> totalPrice) {
+        total.CalcRevenue(totalPrice);
+
+        Sales_data trans;
+        double transPrice;
+        while (std::cin >> trans.bookNo >> trans.units_sold >> transPrice) {
+            trans.CalcRevenue(transPrice);
+
+            if (total.bookNo == trans.bookNo) {
+                total.AddData(trans);
+            }
+            else {
+                total.Print();
+                total.SetData(trans);
+            }
+        }
+        total.Print();
+        return 0;
+    }
+    else {
+        std::cerr << "No Data?!" << std::endl;
+        return -1;
+    }
+}
+```
